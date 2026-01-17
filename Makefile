@@ -20,9 +20,10 @@ all: $(TARGETS)
 
 # Check for nlohmann/json
 check_json:
-	@if [ ! -f json.hpp ]; then \
+	@if [ ! -f include/nlohmann/json.hpp ]; then \
 		echo "Downloading nlohmann/json header..."; \
-		curl -L https://github.com/nlohmann/json/releases/download/v3.11.3/json.hpp -o json.hpp; \
+		mkdir -p include/nlohmann; \
+		curl -L https://github.com/nlohmann/json/releases/download/v3.11.3/json.hpp -o include/nlohmann/json.hpp; \
 	fi
 
 # Build targets

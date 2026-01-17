@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <mutex>
 #include <chrono>
+#include <thread>
 #include <nlohmann/json.hpp>
 
 #ifdef _WIN32
@@ -176,10 +177,10 @@ public:
             
             unlock();
             
-            auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
+            auto elapsed = static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::milliseconds>(
                 std::chrono::steady_clock::now() - start
-            ).count();
-            
+            ).count());
+
             if (elapsed >= timeout_ms) {
                 last_error_ = "Timeout waiting for new data";
                 return false;
