@@ -12,11 +12,37 @@ A cross-platform C++17 library for inter-process communication using shared memo
 - ✅ **Timeout support**: Wait for new data with configurable timeouts
 - ✅ **Validation**: Magic number and version checking
 
+## Project Structure
+
+```
+sharedMemoryLib/
+├── include/                      # Header-only library
+│   └── shared_memory_json.hpp    # Main library header (copy this to use)
+├── examples/                     # Example applications
+│   ├── example_writer.cpp
+│   ├── example_reader.cpp
+│   ├── example_simple_reader.cpp
+│   ├── example_service.cpp
+│   ├── example_controller.cpp
+│   └── example_monitor.cpp
+├── tests/                        # Test suite
+│   └── test_suite.cpp
+├── docs/                         # Documentation
+│   ├── FILE_OVERVIEW.md
+│   ├── QUICK_REFERENCE.md
+│   └── USAGE_GUIDE.md
+├── third_party/                  # Third-party dependencies (auto-downloaded, gitignored)
+│   └── nlohmann/json.hpp
+├── CMakeLists.txt
+├── Makefile
+└── README.md
+```
+
 ## Requirements
 
 - C++17 compatible compiler
-- CMake 3.10 or higher
-- nlohmann/json (automatically fetched by CMake)
+- CMake 3.10 or higher (optional)
+- nlohmann/json (auto-downloaded by Makefile, or fetched by CMake)
 
 ### Platform-specific requirements:
 
@@ -29,43 +55,76 @@ A cross-platform C++17 library for inter-process communication using shared memo
 
 ## Building
 
+### Using Makefile (recommended):
+
+```bash
+# Build all examples and tests (auto-downloads nlohmann/json to third_party/)
+make all
+
+# Run tests
+make test
+
+# Clean build artifacts
+make clean
+
+# Clean shared memory objects (Linux)
+make clean_shm
+```
+
 ### Using CMake:
 
 ```bash
-# Create build directory
 mkdir build && cd build
-
-# Configure
 cmake ..
-
-# Build
 cmake --build .
-
-# This creates:
-# - writer          (example writer application)
-# - reader          (example reader with timeout)
-# - simple_reader   (example simple polling reader)
 ```
 
 ### Manual compilation (Linux):
 
 ```bash
 # Download nlohmann/json header
-wget https://github.com/nlohmann/json/releases/download/v3.11.3/json.hpp
+mkdir -p third_party/nlohmann
+curl -L https://github.com/nlohmann/json/releases/download/v3.11.3/json.hpp -o third_party/nlohmann/json.hpp
 
-# Compile writer
-g++ -std=c++17 example_writer.cpp -o writer -lpthread -lrt
-
-# Compile reader
-g++ -std=c++17 example_reader.cpp -o reader -lpthread -lrt
+# Compile example
+g++ -std=c++17 -Iinclude -Ithird_party examples/example_writer.cpp -o writer -lpthread -lrt
 ```
+
+## Integration
+
+To use this library in your project:
+
+**Option 1: Copy header**
+```bash
+# Just copy the header file
+cp include/shared_memory_json.hpp /your/project/include/
+```
+
+**Option 2: Git submodule**
+```bash
+git submodule add https://github.com/gourav-shinde/sharedMemoryLib.git libs/sharedMemoryLib
+# Add -Ilibs/sharedMemoryLib/include to your compiler flags
+```
+
+**Option 3: CMake FetchContent**
+```cmake
+FetchContent_Declare(
+    sharedMemoryLib
+    GIT_REPOSITORY https://github.com/gourav-shinde/sharedMemoryLib.git
+    GIT_TAG main
+)
+FetchContent_MakeAvailable(sharedMemoryLib)
+target_link_libraries(your_target PRIVATE shared_memory_json)
+```
+
+**Note:** You need nlohmann/json available in your include path.
 
 ## Quick Start
 
 ### Writer Process:
 
 ```cpp
-#include "shared_memory_json.hpp"
+#include <shared_memory_json.hpp>
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
@@ -97,7 +156,7 @@ int main() {
 ### Reader Process:
 
 ```cpp
-#include "shared_memory_json.hpp"
+#include <shared_memory_json.hpp>
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
