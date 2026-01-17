@@ -21,8 +21,8 @@ FetchContent_MakeAvailable(nlohmann_json)
 
 # Header-only library interface
 add_library(shared_memory_json INTERFACE)
-target_include_directories(shared_memory_json INTERFACE 
-    ${CMAKE_CURRENT_SOURCE_DIR}
+target_include_directories(shared_memory_json INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 target_link_libraries(shared_memory_json INTERFACE 
     nlohmann_json::nlohmann_json
@@ -35,31 +35,31 @@ if(UNIX AND NOT APPLE)
 endif()
 
 # Examples
-add_executable(writer example_writer.cpp)
+add_executable(writer examples/example_writer.cpp)
 target_link_libraries(writer PRIVATE shared_memory_json)
 
-add_executable(reader example_reader.cpp)
+add_executable(reader examples/example_reader.cpp)
 target_link_libraries(reader PRIVATE shared_memory_json)
 
-add_executable(simple_reader example_simple_reader.cpp)
+add_executable(simple_reader examples/example_simple_reader.cpp)
 target_link_libraries(simple_reader PRIVATE shared_memory_json)
 
 # Advanced examples
-add_executable(service example_service.cpp)
+add_executable(service examples/example_service.cpp)
 target_link_libraries(service PRIVATE shared_memory_json)
 
-add_executable(controller example_controller.cpp)
+add_executable(controller examples/example_controller.cpp)
 target_link_libraries(controller PRIVATE shared_memory_json)
 
-add_executable(monitor example_monitor.cpp)
+add_executable(monitor examples/example_monitor.cpp)
 target_link_libraries(monitor PRIVATE shared_memory_json)
 
 # Test suite
-add_executable(test_suite test_suite.cpp)
+add_executable(test_suite tests/test_suite.cpp)
 target_link_libraries(test_suite PRIVATE shared_memory_json)
 
 # Installation
-install(FILES shared_memory_json.hpp 
+install(FILES include/shared_memory_json.hpp
     DESTINATION include/shared_memory
 )
 

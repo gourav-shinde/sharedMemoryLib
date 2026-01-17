@@ -1,7 +1,7 @@
 # Makefile for Shared Memory JSON Library
 
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra -O2 -I.
+CXXFLAGS = -std=c++17 -Wall -Wextra -O2 -Iinclude
 
 # Platform detection
 UNAME_S := $(shell uname -s)
@@ -26,26 +26,26 @@ check_json:
 	fi
 
 # Build targets
-writer: check_json example_writer.cpp shared_memory_json.hpp
-	$(CXX) $(CXXFLAGS) example_writer.cpp -o writer $(LDFLAGS)
+writer: check_json examples/example_writer.cpp include/shared_memory_json.hpp
+	$(CXX) $(CXXFLAGS) examples/example_writer.cpp -o writer $(LDFLAGS)
 
-reader: check_json example_reader.cpp shared_memory_json.hpp
-	$(CXX) $(CXXFLAGS) example_reader.cpp -o reader $(LDFLAGS)
+reader: check_json examples/example_reader.cpp include/shared_memory_json.hpp
+	$(CXX) $(CXXFLAGS) examples/example_reader.cpp -o reader $(LDFLAGS)
 
-simple_reader: check_json example_simple_reader.cpp shared_memory_json.hpp
-	$(CXX) $(CXXFLAGS) example_simple_reader.cpp -o simple_reader $(LDFLAGS)
+simple_reader: check_json examples/example_simple_reader.cpp include/shared_memory_json.hpp
+	$(CXX) $(CXXFLAGS) examples/example_simple_reader.cpp -o simple_reader $(LDFLAGS)
 
-service: check_json example_service.cpp shared_memory_json.hpp
-	$(CXX) $(CXXFLAGS) example_service.cpp -o service $(LDFLAGS)
+service: check_json examples/example_service.cpp include/shared_memory_json.hpp
+	$(CXX) $(CXXFLAGS) examples/example_service.cpp -o service $(LDFLAGS)
 
-controller: check_json example_controller.cpp shared_memory_json.hpp
-	$(CXX) $(CXXFLAGS) example_controller.cpp -o controller $(LDFLAGS)
+controller: check_json examples/example_controller.cpp include/shared_memory_json.hpp
+	$(CXX) $(CXXFLAGS) examples/example_controller.cpp -o controller $(LDFLAGS)
 
-monitor: check_json example_monitor.cpp shared_memory_json.hpp
-	$(CXX) $(CXXFLAGS) example_monitor.cpp -o monitor $(LDFLAGS)
+monitor: check_json examples/example_monitor.cpp include/shared_memory_json.hpp
+	$(CXX) $(CXXFLAGS) examples/example_monitor.cpp -o monitor $(LDFLAGS)
 
-test_suite: check_json test_suite.cpp shared_memory_json.hpp
-	$(CXX) $(CXXFLAGS) test_suite.cpp -o test_suite $(LDFLAGS)
+test_suite: check_json tests/test_suite.cpp include/shared_memory_json.hpp
+	$(CXX) $(CXXFLAGS) tests/test_suite.cpp -o test_suite $(LDFLAGS)
 
 # Clean
 clean:
