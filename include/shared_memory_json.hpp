@@ -26,7 +26,7 @@ struct SharedMemoryHeader {
     uint32_t magic_number;      // Validation magic number
     uint32_t version;           // Protocol version
     uint64_t data_size;         // Size of JSON data
-    uint64_t sequence_number;   // Incremented on each write
+    uint64_t sequence_number;   // Incremented on each write (wraps after ~584 years at 1B writes/sec)
     uint64_t timestamp;         // Last write timestamp (microseconds since epoch)
     char padding[32];           // Reserved for future use
 };
@@ -156,6 +156,9 @@ public:
      * @param timeout_ms Timeout in milliseconds
      * @param last_seq Last sequence number seen (0 to read regardless)
      * @return true if new data read, false on timeout or error
+     *
+     * @note Uses sequence_number > last_seq comparison. On uint64_t overflow
+     *       (after ~584 years at 1B writes/sec), one update may be missed.
      */
     bool readWithTimeout(json& data, uint64_t timeout_ms, uint64_t last_seq = 0) {
         auto start = std::chrono::steady_clock::now();
