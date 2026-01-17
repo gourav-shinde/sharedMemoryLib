@@ -1,7 +1,7 @@
 # Makefile for Shared Memory JSON Library
 
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra -O2 -Iinclude
+CXXFLAGS = -std=c++17 -Wall -Wextra -O2 -Iinclude -Ithird_party
 
 # Platform detection
 UNAME_S := $(shell uname -s)
@@ -18,12 +18,12 @@ TARGETS = writer reader simple_reader service controller monitor test_suite
 
 all: $(TARGETS)
 
-# Check for nlohmann/json
+# Check for nlohmann/json (third-party dependency)
 check_json:
-	@if [ ! -f include/nlohmann/json.hpp ]; then \
+	@if [ ! -f third_party/nlohmann/json.hpp ]; then \
 		echo "Downloading nlohmann/json header..."; \
-		mkdir -p include/nlohmann; \
-		curl -L https://github.com/nlohmann/json/releases/download/v3.11.3/json.hpp -o include/nlohmann/json.hpp; \
+		mkdir -p third_party/nlohmann; \
+		curl -L https://github.com/nlohmann/json/releases/download/v3.11.3/json.hpp -o third_party/nlohmann/json.hpp; \
 	fi
 
 # Build targets

@@ -1,0 +1,27 @@
+# Third-party dependencies
+third_party/
+
+# Build artifacts
+*.o
+*.a
+*.so
+*.dylib
+
+# Binaries
+writer
+reader
+simple_reader
+service
+controller
+monitor
+test_suite
+
+# Build directories
+build/
+cmake-build-*/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
