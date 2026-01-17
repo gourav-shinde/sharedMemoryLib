@@ -318,6 +318,7 @@ private:
 
         // Create or open shared memory
         if (create) {
+            shm_unlink(shm_name.c_str()); // Clean up any existing shared memory
             shm_fd_ = shm_open(shm_name.c_str(), O_CREAT | O_RDWR, 0666);
             if (shm_fd_ == -1) {
                 sem_close(sem_);
